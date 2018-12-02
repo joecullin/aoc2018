@@ -62,3 +62,5 @@ typings/
 
 # vi temp files
 .*.swp
+
+package-lock.json
