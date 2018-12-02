@@ -5,17 +5,13 @@ getStdin().then(input => {
     let ids = input.split("\n");
     ids.forEach( (id) => {
         ids.forEach( (id2) => {
-            let diffCount = 0;
             let same = [];
             for (var i = 0; i < id.length; i++) {
                 if (id.charAt(i) == id2.charAt(i)){
                     same.push(id.charAt(i));
                 }
-                else{
-                    diffCount++;
-                }
             }
-            if (diffCount == 1){
+            if (same.length == id.length-1){
                 console.log(same.join(''));
                 process.exit();
             }
