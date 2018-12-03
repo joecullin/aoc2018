@@ -22,16 +22,11 @@ getStdin().then(input => {
         }
     });
 
-    let count = 0;
-    for (x=0; x<whole.length; x++){
-        if (whole[x] !== undefined){
-            for (y=0; y<whole[x].length; y++){
-                if (whole[x][y] !== undefined && whole[x][y] > 1){
-                    count++;
-                }
-            }
-        }
-    }
+    let count = whole.reduce( (accumulator, currentValue) => {
+        return accumulator + currentValue.reduce( (accumulator, currentValue) => {
+            return currentValue>1 ? accumulator + 1 : accumulator;
+        }, 0);
+    }, 0);
 
     console.log(count);
 });
