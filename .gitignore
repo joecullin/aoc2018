@@ -64,3 +64,6 @@ typings/
 .*.swp
 
 package-lock.json
+
+input.txt
+small.txt
