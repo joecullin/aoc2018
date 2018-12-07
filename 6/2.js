@@ -59,26 +59,42 @@ const mode = (array) => {
 
 getInput()
 .then( (grid) => {
-    grid["left"] -= 10000;
-    grid["top"] -= 10000;
-    grid["bottom"] += 10000;
-    grid["right"] += 10000;
-    console.log(grid);
-    let goodPoints = [];
     let good = 0;
-    for (var i=grid["left"]; i<=grid["right"]; i++){
-        console.log(i);
-        for (var j=grid["top"]; j<=grid["bottom"]; j++){
-            let totalDistance = grid.myPoints.reduce( (accumulator, thisPoint) => {
-                return accumulator + manhattan([thisPoint.x, thisPoint.y], [i,j]);
-            }, 0);
-            if (totalDistance < 10000){
-                // goodPoints.push(thisPoint.id);
-                good++;
+    let startX = grid["left"] + Math.floor((grid["right"] - grid["left"])/2);
+    let startY = grid["top"] + Math.floor((grid["bottom"] - grid["top"])/2);
+    let radius = 0;
+    let foundSome = 0;
+    do {
+        let previousTotal = good;
+        let check = [];
+        if (radius == 0){
+            check.push([startX, startY]);
+        }
+        else{
+            let left = startX - radius;
+            let right = startX + radius;
+            let top = startY - radius;
+            let bottom = startY + radius;
+            for (var i=left; i<=right; i++){
+                check.push([i,top]);
+                check.push([i,bottom]);
+            }
+            for (var i=top+1; i<bottom; i++){
+                check.push([left,i]);
+                check.push([right,i]);
             }
         }
-    }
-    // console.log(goodPoints.length);
+        check.forEach( (point) => {
+            let totalDistance = grid.myPoints.reduce( (accumulator, thisPoint) => {
+                return accumulator + manhattan([thisPoint.x, thisPoint.y], point);
+            }, 0);
+            if (totalDistance < 10000){
+                good++;
+            }
+        });
+        foundSome = previousTotal != good;
+        radius++;
+    } while (foundSome);
     console.log(good);
 });
 
