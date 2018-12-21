@@ -48,7 +48,7 @@ getInput()
         });
         allSteps[step].parents = parents;
     });
-    console.log(allSteps);
+    // console.log(allSteps);
     let done = false;
     let path = [];
     let alreadyTaken = {};
@@ -57,11 +57,10 @@ getInput()
     let candidates = {};
     let workerTasks = {1: '', 2: '', 3: '', 4: '', 5: ''};
     let workerTimes = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0};
-    let clock = 0;
+    let clock = -1;
 
     Object.keys(allSteps).filter( step => !allSteps[step].parents.length ).forEach( step => { candidates[step] = 1 });
     while (!done){
-        clock++;
         console.log(clock, workerTimes, workerTasks);
         Object.entries(workerTimes).forEach( ([worker, timeLeft]) => {
             console.log(`worker ${worker}`);
@@ -96,12 +95,16 @@ getInput()
                     alreadyTaken[takeStep] = 1;
                     inProgress[takeStep] = 1;
                     workerTasks[worker] = takeStep;
-                    workerTimes[worker] = takeStep.charCodeAt()-3;   //TODO - take one second off?
+                    workerTimes[worker] = takeStep.charCodeAt()-4;
                     console.log('path', path.join(''));
                 }                        
             }
         });
         done = !Object.keys(candidates).length && !Object.keys(workerTimes).filter( worker => workerTimes[worker] ).length;
+        if (!done)
+            clock++;
     }
+    console.log(path.length);
     console.log(path.join(''));
+    console.log(clock);
 });
